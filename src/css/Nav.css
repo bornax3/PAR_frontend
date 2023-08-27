@@ -1,0 +1,90 @@
+/* Nav.css */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* Change this to your desired background color */
+  color: #fff; /* Change this to your desired text color */
+  display: flex;
+  justify-content: flex-end; /* Push all items to the right */
+  align-items: center;
+  z-index: 100;
+}
+
+.menu-icon {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px;
+}
+
+/*.menu-icon:hover {
+  background-color: #716d6d;
+}
+
+.home-icon:hover {
+  background-color: #716d6d;
+}*/
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+.menu-icon.open .bar:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-icon.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-icon.open .bar:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 31px; /* Adjust the distance from the menu icon */
+  right: 0;
+  background-color: rgba(104, 101, 101, 0.8);
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 330px; /* Adjust the menu width as needed */
+  opacity: 70%;
+}
+
+.menu-item {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 20px; /* Adjust the text size as needed */
+  padding: 5px; /* Add padding to space the items vertically */
+}
+
+.menu-button {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 20px; /* Adjust the text size as needed */
+  padding: 5px; /* Add padding to space the items vertically */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.menu-dropdown li:hover {
+  background-color: #4b4949;
+  color: black;
+}
+
+.home-icon {
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+}

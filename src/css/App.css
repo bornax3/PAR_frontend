@@ -1,0 +1,56 @@
+/* App.css */
+
+/* Reset some default styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the root element */
+#root {
+  font-family: Arial, sans-serif;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style the Layout component */
+.Layout {
+  text-align: center;
+}
+
+/* Style the header inside Layout */
+.Layout-header {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* Style the main content inside Layout */
+.Layout-content {
+  background-color: #282c34;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+/* Style the footer inside Layout */
+.Layout-footer {
+  background-color: #282c34;
+  min-height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Add specific styles for your components here */
+/* For example, Login, Register, Home, etc. */

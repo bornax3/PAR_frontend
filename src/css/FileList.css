@@ -1,0 +1,65 @@
+/* Container for the FileList component */
+.file-list-container {
+  margin-left: 250px; /* Adjust this to match your sidebar width */
+  padding: 20px; /* Add some padding for spacing */
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition when the sidebar opens/closes */
+}
+
+/* Style for the FileList component itself */
+.file-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Style for individual file items */
+.file-item {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style for file details */
+.file-details {
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* Style for file name */
+.file-name {
+  font-weight: bold;
+}
+
+/* Style for file creation date */
+.file-date {
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* Style for approved files */
+.approved {
+  color: green;
+  cursor: pointer;
+}
+
+/* Style for not approved files */
+.not-approved {
+  color: red;
+  cursor: pointer;
+}
+
+.file-download,
+.file-delete {
+  cursor: pointer;
+}
+
+.approved:hover::before,
+.not-approved:hover::before,
+.download:hover::before,
+.delete:hover::before {
+  opacity: 1;
+  visibility: visible;
+}

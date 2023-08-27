@@ -1,0 +1,10 @@
+.toggle-button {
+  margin-left: 250px;
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 20px;
+}
