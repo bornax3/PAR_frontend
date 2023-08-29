@@ -1,18 +1,17 @@
-/* Container for the FileList component */
-.file-list-container {
-  margin-left: 250px; /* Adjust this to match your sidebar width */
-  padding: 20px; /* Add some padding for spacing */
-  transition: margin-left 0.3s ease-in-out; /* Smooth transition when the sidebar opens/closes */
-}
-
 /* Style for the FileList component itself */
 .file-list {
+  width: 100%;
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Style for individual file items */
 .file-item {
+  width: 100%;
   background-color: #f5f5f5;
   border: 1px solid #ddd;
   margin-bottom: 10px;

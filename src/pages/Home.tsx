@@ -1,13 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import "../css/Home.css";
-import { Link, useLocation } from "react-router-dom";
 import FileUploadModal from "../modals/FileUploadModal";
 import FileList from "../components/FileList";
 import useAuth from "../hooks/useAuth";
 
 const Home = () => {
   const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
-  const location = useLocation();
   const { userToken, userId } = useAuth();
 
   const toggleFileUploadModal = () => {
@@ -25,14 +23,13 @@ const Home = () => {
 
   // Effect to reset the file upload flag when it's triggered
   useEffect(() => {
-    //console.log("fileUploaded value:", fileUploaded); // Log the value
     if (fileUploaded) {
-      // setFileUploaded(false); // Comment out this line
+      setFileUploaded(false);
     }
   }, [fileUploaded]);
 
   return (
-    <div>
+    <main className="main">
       <FileList
         userId={userId}
         userToken={userToken}
@@ -42,7 +39,7 @@ const Home = () => {
         isOpen={isFileUploadModalOpen}
         onClose={() => setIsFileUploadModalOpen(false)}
         userToken={userToken}
-        onUploadSuccess={handleFileUploadSuccess} // Pass the success callback
+        onUploadSuccess={handleFileUploadSuccess}
       />
 
       <button
@@ -52,14 +49,8 @@ const Home = () => {
       >
         Upload File
       </button>
-    </div>
+    </main>
   );
 };
 
 export default Home;
-
-// need to resolve rendering files issue when uploading and need to finnish download and delete files
-// also need to specifically add the funcionality of approving files to the admin user.
-// push on git
-
-// new comment to test github

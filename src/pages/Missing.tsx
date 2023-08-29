@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Missing = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -13,9 +13,9 @@ const Missing = () => {
         <Link to="/">Visit Our Homepage</Link>
       ) : (
         <Link to="/">Please Login</Link>
-      )}     
+      )}
     </main>
-  )
-}
+  );
+};
 
-export default Missing
+export default Missing;

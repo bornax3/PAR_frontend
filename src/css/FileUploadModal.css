@@ -1,89 +1,110 @@
+/* File upload modal containers */
 .file-upload-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    transition: opacity 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .file-upload-modal.open {
-    display: flex;
+  display: flex;
 }
 
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Modal header */
 .modal-content h2 {
-    margin-top: 0;
+  text-align: center;
 }
 
-.modal-content button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 3px;
-    cursor: pointer;
+/* Buttons */
+.remove-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  width: 30%;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 35%;
+  width: 30%;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  margin-top: 5px;
 }
 
 .modal-content button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
+  cursor: pointer;
 }
 
+/* File upload area */
 .dragging .drop-area {
-    border: 2px dashed #007bff;
-    background-color: #f2f2f2;
+  border: 2px dashed #007bff;
+  background-color: #f2f2f2;
 }
 
 .drop-area {
-    border: 2px dashed #ccc;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    height: 120px;
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  height: 40%;
 }
 
 .drop-area p {
-    font-size: 16px;
-    color: #999;
+  font-size: 16px;
+  color: #999;
 }
 
 .drop-area.active {
-    border: 2px dashed #007bff;
-    background-color: rgba(0, 123, 255, 0.1);
-    color: #007bff;
+  border: 2px dashed #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+  color: #007bff;
 }
 
+/* Dropdown and file preview */
 .dropdown {
-    margin-top: 10px;
-    display: block;
-    color: #000000;
+  margin-top: 10px;
+  display: block;
+  color: #000000;
 }
 
 .file-preview {
-    margin-top: 10px;
-    height: 100px;
+  margin-top: 10px;
+  height: 100px;
 }
 
 .file-preview-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 5px;
-    height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  height: 50px;
 }
 
 .file-preview-item span {
-    margin: 10px;
-    color: #007bff;
+  margin: 10px;
+  color: #007bff;
 }

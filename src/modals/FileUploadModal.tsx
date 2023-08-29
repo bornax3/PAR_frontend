@@ -3,10 +3,6 @@ import axios from "axios";
 import Select from "react-select";
 import "../css/FileUploadModal.css";
 
-////////////////////////////////
-////////// INTERFACES //////////
-////////////////////////////////
-
 interface FileUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,6 +20,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   isOpen,
   onClose,
   userToken,
+  onUploadSuccess,
 }) => {
   // Upload Box
   const [isDragActive, setIsDragActive] = useState(false);
@@ -34,11 +31,6 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  ////////////////////////////////
-  ///// FILE/DROPDOWN FUNC. //////
-  ////////////////////////////////
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -46,7 +38,6 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
 
     const files = Array.from(event.dataTransfer.files);
     setSelectedFiles([...selectedFiles, ...files]);
-    setShowDropdown(true);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -75,7 +66,6 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
     const updatedFiles = [...selectedFiles];
     updatedFiles.splice(index, 1);
     setSelectedFiles(updatedFiles);
-    setShowDropdown(updatedFiles.length > 0);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -85,6 +75,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   const handleActivityChange = (selectedOption: Activity | null) => {
     setSelectedActivity(selectedOption);
     console.log(`Option selected:`, selectedOption);
+    console.log(`Option opis:`, selectedOption?.opis);
   };
 
   // Fetch activities for the dropdown
@@ -95,6 +86,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
       )
       .then((response) => {
         setActivities(response.data);
+        console.log("Activities:", response.data);
       })
       .catch((error) => {
         console.error("Error fetching activities:", error);
@@ -107,17 +99,11 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
       "http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager";
 
     const formData = new FormData();
-    selectedFiles.forEach((file /*, index*/) => {
+    selectedFiles.forEach((file) => {
       if (file && selectedActivity) {
-        //formData.append(`file${index}`, file);
         formData.append(`fileName`, file);
         formData.append("aktivnostId", selectedActivity.value.toString());
-
-        console.log("From data: ", formData);
-        // iterate thtough formData
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
+        console.log("File:", file);
       } else {
         console.error("Error: file or activity is undefined");
       }
@@ -131,10 +117,11 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
         },
       });
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         console.log("Files uploaded successfully");
+
+        onUploadSuccess();
         setSelectedFiles([]);
-        setShowDropdown(false);
       } else {
         console.error("File upload failed. Server returned:", response.status);
       }
@@ -188,17 +175,31 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
           {selectedFiles.map((file, index) => (
             <div key={index} className="file-preview-item">
               <span>{file.name}</span>
-              <button onClick={() => handleFileRemove(index)}>Remove</button>
+              {selectedActivity && (
+                <span className="selected-activity">
+                  {selectedActivity.opis}
+                </span>
+              )}
+              <button
+                className="remove-button"
+                onClick={() => handleFileRemove(index)}
+              >
+                Remove
+              </button>
             </div>
           ))}
         </div>
         <button
+          className="submit-button"
+          type="button"
           onClick={handleFileSubmit}
           disabled={selectedActivity === null || selectedFiles.length === 0}
         >
           Submit
         </button>
-        <button onClick={onClose}>Close</button>
+        <button className="submit-button" type="button" onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );

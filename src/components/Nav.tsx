@@ -13,9 +13,7 @@ const Nav: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userToken");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("roles");
+    localStorage.clear();
     navigate("/login");
   };
 
