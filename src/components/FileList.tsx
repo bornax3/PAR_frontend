@@ -3,47 +3,18 @@ import axios from "axios";
 import "../css/FileList.css";
 import { FaDownload, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
-interface File {
-  naziv: string;
-  datumKreiranja: string;
-  odobreno: boolean;
-  id: number;
-}
-
 interface FileListProps {
   userId: number | null;
   userToken: string | null;
   fileUploaded: boolean;
 }
 
-const handleFileDownload = (fileName: string, userToken: string | null) => {
-  // Construct the Azure Blob Storage URL with the dynamic file name
-  const azureBlobUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DownloadFile?fileName=${fileName}`;
-
-  // Make a GET request to the Azure Blob Storage URL
-  axios
-    .get(azureBlobUrl, {
-      responseType: "blob",
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    })
-    .then((response) => {
-      // Create a temporary URL for the blob data
-      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-      // Create an anchor element to trigger the download
-      const a = document.createElement("a");
-
-      a.href = blobUrl;
-      a.download = fileName; // Set the download attribute to specify the file name
-      document.body.appendChild(a);
-      a.click(); // Simulate a click event to trigger the download
-      window.URL.revokeObjectURL(blobUrl); // Release the blob URL
-    })
-    .catch((error) => {
-      console.error("Error downloading file:", error);
-    });
-};
+interface File {
+  naziv: string;
+  datumKreiranja: string;
+  odobreno: boolean;
+  id: number;
+}
 
 const FileList: React.FC<FileListProps> = ({
   userId,
@@ -52,6 +23,36 @@ const FileList: React.FC<FileListProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const myApiUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/korisnici/${userId}/datoteke`;
+
+  // Function to handle file download
+  const handleFileDownload = (fileName: string, userToken: string | null) => {
+    // Construct the Azure Blob Storage URL with the dynamic file name
+    const azureBlobUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DownloadFile?fileName=${fileName}`;
+
+    // Make a GET request to the Azure Blob Storage URL
+    axios
+      .get(azureBlobUrl, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => {
+        // Create a temporary URL for the blob data
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+        // Create an anchor element to trigger the download
+        const a = document.createElement("a");
+
+        a.href = blobUrl;
+        a.download = fileName; // Set the download attribute to specify the file name
+        document.body.appendChild(a);
+        a.click(); // Simulate a click event to trigger the download
+        window.URL.revokeObjectURL(blobUrl); // Release the blob URL
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  };
 
   // Function to handle file deletion
   const handleItemDelete = (fileName: string, userToken: string | null) => {

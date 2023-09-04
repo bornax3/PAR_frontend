@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import { FaTrash } from "react-icons/fa";
 import "../css/FileUploadModal.css";
 
 interface FileUploadModalProps {
@@ -133,17 +134,23 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   return (
     <div
       className={`file-upload-modal ${isOpen ? "open" : ""}`}
+      onClick={onClose}
       onDrop={handleFileDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
     >
-      <div className={`modal-content ${isDragActive ? "active" : ""}`}>
+      <div
+        className={`modal-content ${isDragActive ? "active" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2>Upload File</h2>
         <div
           className={`drop-area ${isDragActive ? "active" : ""}`}
           onClick={handleBrowseClick}
         >
-          <p>Drag and drop files here or click to browse</p>
+          <p>
+            Drag and drop files here <br /> or <br /> click to browse
+          </p>
         </div>
         <input
           type="file"
@@ -160,7 +167,10 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
               }))}
               value={
                 selectedActivity
-                  ? { value: selectedActivity.id, label: selectedActivity.opis }
+                  ? {
+                      value: selectedActivity.id,
+                      label: selectedActivity.opis,
+                    }
                   : null
               }
               onChange={(selectedOption) =>
@@ -175,16 +185,11 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
           {selectedFiles.map((file, index) => (
             <div key={index} className="file-preview-item">
               <span>{file.name}</span>
-              {selectedActivity && (
-                <span className="selected-activity">
-                  {selectedActivity.opis}
-                </span>
-              )}
               <button
                 className="remove-button"
                 onClick={() => handleFileRemove(index)}
               >
-                Remove
+                <FaTrash />
               </button>
             </div>
           ))}

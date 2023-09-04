@@ -1,0 +1,98 @@
+/* Style for the UserFileModal container */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-container.open {
+  display: flex;
+}
+
+/* Style for the modal content */
+.user-file-modal {
+  background-color: #fff;
+  border: 1px solid #ddd; /* Add a border */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 60%; /* Adjust the width as needed */
+  position: relative; /* Relative positioning for close button placement */
+  display: flex;
+  flex-direction: column;
+  height: 80%; /* Set the desired height */
+  overflow: auto; /* Enable scrolling if the content overflows */
+}
+
+/* Style for the file list */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px; /* Add margin to separate from modal content */
+}
+
+/* Style for individual file items */
+.file-item {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style for file details */
+.file-details {
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* Style for file name */
+.file-name {
+  font-weight: bold;
+}
+
+/* Style for file creation date */
+.file-date {
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* Style for download button */
+.file-download {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.file-download:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the close button */
+.submit-button {
+  background-color: #ccc;
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  align-self: flex; /* Align button to the bottom */
+  margin-top: 10px; /* Add margin to separate from the file list */
+}
+
+.submit-button:hover {
+  background-color: #999;
+}

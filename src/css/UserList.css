@@ -1,5 +1,5 @@
-/* Style for the FileList component itself */
-.file-list {
+/* Style for the UserList component itself */
+.user-list {
   width: 100%;
   list-style: none;
   padding: 0;
@@ -9,8 +9,8 @@
   justify-content: center;
 }
 
-/* Style for individual file items */
-.file-item {
+/* Style for individual user items */
+.user-item {
   width: 100%;
   background-color: #f5f5f5;
   border: 1px solid #ddd;
@@ -21,41 +21,22 @@
   align-items: center;
 }
 
-/* Style for file details */
-.file-details {
+/* Style for user details */
+.user-details {
   flex: 1;
   margin-right: 10px;
 }
 
-/* Style for file name */
-.file-name {
-  font-weight: bold;
-}
-
-/* Style for file creation date */
-.file-date {
-  font-size: 0.9em;
-  color: #777;
-}
-
-/* Style for approved files */
-.approved {
-  color: green;
-  cursor: pointer;
-}
-
-/* Style for not approved files */
-.not-approved {
-  color: red;
-  cursor: pointer;
-}
-
 /* Style for hover */
-.file-download,
-.file-delete {
+.item-files,
+.item-delete,
+.item-check {
   cursor: pointer;
+  opacity: 1;
+  visibility: visible;
 }
 
+/* not finished.....................*/
 .approved:hover::before,
 .not-approved:hover::before,
 .download:hover::before,

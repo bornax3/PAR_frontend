@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  //const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,9 +41,13 @@ const Login: React.FC = () => {
         const roles = data.ovlast;
         const userId = data.id;
 
-        login(userToken, roles, userId);
-
-        navigate(from, { replace: true, state: { userToken } });
+        if (roles.includes("adminUstanove")) {
+          login(userToken, roles, userId);
+          navigate("/admin", { replace: true, state: { userToken } });
+        } else if (roles.includes("admin") || roles.includes("korisnik")) {
+          login(userToken, roles, userId);
+          navigate("/", { replace: true, state: { userToken } });
+        }
       } else {
         console.log("Login failed");
       }
