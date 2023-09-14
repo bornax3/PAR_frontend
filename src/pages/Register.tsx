@@ -77,7 +77,7 @@ const Register = () => {
         prezime: surname || null,
         email: email,
         lozinkaHash: password,
-        broj: phoneNumber || null,
+        brojMobitela: phoneNumber || null,
       };
 
       const apiUrl =

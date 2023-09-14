@@ -1,6 +1,6 @@
 .sidebar {
   position: fixed;
-  margin-top: 20px;
+  margin-top: 46px;
   top: 0;
   left: -250px; /* Initial position outside the viewport */
   width: 250px;
@@ -86,4 +86,13 @@
 
 .sidebar-handle:hover {
   background-color: #4b4949;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #272727;
+  font-size: larger;
 }

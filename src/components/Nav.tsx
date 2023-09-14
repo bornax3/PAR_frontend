@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import "../css/Nav.css";
+//import "../css/Nav.css";
+import "../css/Layout.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";

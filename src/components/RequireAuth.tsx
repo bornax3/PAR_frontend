@@ -10,12 +10,15 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: string[] }) => {
     ? allowedRoles.some((role) => roles.includes(role))
     : false;
 
+  console.log("Roles in require auth:", roles);
+  console.log("Allowed Roles:", allowedRoles);
+
   return userToken && isAuthorized ? (
     <Outlet />
   ) : userToken ? (
-    <Navigate to="/unauthorized" state={{ from: location }} />
+    <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
-    <Navigate to="/login" state={{ from: location }} />
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };
 

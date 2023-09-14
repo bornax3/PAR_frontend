@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState, useContext } from "react";
+import { ReactNode, createContext, useState } from "react";
 
 interface AuthProviderProps {
   children: ReactNode; // Specify the type of children

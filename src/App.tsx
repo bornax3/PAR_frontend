@@ -6,11 +6,12 @@ import Register from "./pages/Register";
 import Login from "./components/Login";
 import Home from "./pages/Home";
 import Missing from "./pages/Missing";
-import AccountSettings from "./pages/AccountSettings";
 import Unauthorized from "./pages/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./pages/Layout";
 import SchoolAdmin from "./pages/SchoolAdmin";
+import Account from "./pages/Account";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -20,18 +21,32 @@ function App() {
       <Route path="register" element={<Register />} />
       <Route path="unauthorized" element={<Unauthorized />} />
 
-      {/* protected routes */}
+      {/* admin and korisnik */}
       <Route element={<RequireAuth allowedRoles={["admin", "korisnik"]} />}>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/account" element={<AccountSettings />} />
         </Route>
       </Route>
 
-      {/* School admin routes */}
-      <Route element={<RequireAuth allowedRoles={["adminUstanove"]} />}>
+      {/* admin and voditeljUstanove */}
+      <Route
+        element={<RequireAuth allowedRoles={["admin", "voditeljUstanove"]} />}
+      >
         <Route path="/" element={<Layout />}>
           <Route path="/admin" element={<SchoolAdmin />} />
+        </Route>
+      </Route>
+
+      {/* Common routes */}
+      <Route
+        element={
+          <RequireAuth
+            allowedRoles={["admin", "korisnik", "voditeljUstanove"]}
+          />
+        }
+      >
+        <Route path="/" element={<Layout />}>
+          <Route path="account" element={<Account />} />
         </Route>
       </Route>
 

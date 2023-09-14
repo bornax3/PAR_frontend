@@ -1,14 +1,19 @@
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
 import Nav from "../components/Nav";
+import "../css/Layout.css";
 
 const Layout = () => {
   return (
-    <main className="App">
+    <div className="layout-container">
       <Nav />
-      <Sidebar />
-      <Outlet />
-    </main>
+      <div className="content-container">
+        <Sidebar />
+        <div className="content">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };
 

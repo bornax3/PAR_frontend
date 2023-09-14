@@ -4,10 +4,10 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333; /* Change this to your desired background color */
-  color: #fff; /* Change this to your desired text color */
+  background-color: #333;
+  color: #fff;
   display: flex;
-  justify-content: flex-end; /* Push all items to the right */
+  justify-content: flex-end;
   align-items: center;
   z-index: 100;
 }
@@ -50,29 +50,29 @@
 
 .menu-dropdown {
   position: absolute;
-  top: 31px; /* Adjust the distance from the menu icon */
+  top: 31px;
   right: 0;
   background-color: rgba(104, 101, 101, 0.8);
   list-style-type: none;
   padding: 0;
   display: flex;
   flex-direction: column;
-  width: 330px; /* Adjust the menu width as needed */
+  width: 330px;
   opacity: 70%;
 }
 
 .menu-item {
   text-decoration: none;
   color: #ffffff;
-  font-size: 20px; /* Adjust the text size as needed */
-  padding: 5px; /* Add padding to space the items vertically */
+  font-size: 20px;
+  padding: 5px;
 }
 
 .menu-button {
   text-decoration: none;
   color: #ffffff;
-  font-size: 20px; /* Adjust the text size as needed */
-  padding: 5px; /* Add padding to space the items vertically */
+  font-size: 20px;
+  padding: 5px;
   border: none;
   background-color: transparent;
   cursor: pointer;

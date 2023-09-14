@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../css/Sidebar.css";
+//import "../css/Sidebar.css";
+import "../css/Layout.css";
 import { Link } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
@@ -11,22 +12,17 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
-      <div className="sidebar-header">Sidebar</div>
+      <div className="sidebar-header">General Settings</div>
       <ul className="sidebar-items">
         <li>
           <Link to="/account" className="sidebar-item">
-            Account Settings
-          </Link>
-        </li>
-        <li>
-          <Link to="/" className="sidebar-item">
-            Home
+            Account
           </Link>
         </li>
       </ul>
-      <div className="sidebar-handle" onClick={toggleSidebar}>
+      {/* <div className="sidebar-handle" onClick={toggleSidebar}>
         {isSidebarOpen ? "←" : "→"}
-      </div>
+      </div> */}
     </div>
   );
 };

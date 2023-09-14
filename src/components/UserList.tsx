@@ -10,6 +10,7 @@ interface UserListProps {
 }
 
 export interface User {
+  id: number;
   imeIPrezime: string;
   email: string;
   poz_broj: string;
@@ -23,11 +24,29 @@ const UserList: React.FC<UserListProps> = ({ userId, userToken }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [isUserFileModalOpen, setIsUserFileModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
 
   const toggleUserFileModal = (user: User) => {
     setSelectedUser(user);
+    console.log("User information: ", user);
     setIsUserFileModalOpen(!isUserFileModalOpen);
   };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearchQuery(value);
+  };
+
+  useEffect(() => {
+    // Filter users based on the search query
+    const filtered = users.filter(
+      (user) =>
+        user.imeIPrezime.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [searchQuery, users]);
 
   useEffect(() => {
     // Make a GET request to fetch users
@@ -48,8 +67,16 @@ const UserList: React.FC<UserListProps> = ({ userId, userToken }) => {
 
   return (
     <div>
+      {/* Search input */}
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search users"
+        value={searchQuery}
+        onChange={handleSearchInputChange}
+      />
       <ul className="user-list">
-        {users.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <li className="user-item" key={index}>
             <div className="user-details">
               <div>{user.imeIPrezime}</div>
@@ -64,15 +91,6 @@ const UserList: React.FC<UserListProps> = ({ userId, userToken }) => {
                 onClick={() => toggleUserFileModal(user)}
               >
                 <FaFolder />
-              </button>
-              <button
-                type="button"
-                className="item-delete"
-                onClick={() => {
-                  // TODO: Implement deleting users
-                }}
-              >
-                <FaTrash />
               </button>
             </div>
           </li>

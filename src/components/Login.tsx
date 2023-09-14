@@ -36,12 +36,13 @@ const Login: React.FC = () => {
 
       if (response.status === 200) {
         const data = response.data;
+        console.log("Data: ", data);
 
         const userToken = data.token;
         const roles = data.ovlast;
         const userId = data.id;
 
-        if (roles.includes("adminUstanove")) {
+        if (roles.includes("voditeljUstanove")) {
           login(userToken, roles, userId);
           navigate("/admin", { replace: true, state: { userToken } });
         } else if (roles.includes("admin") || roles.includes("korisnik")) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/FileList.css";
 import { FaDownload, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
+import useFileHandler from "../hooks/useFileHandler";
 
 interface FileListProps {
   userId: number | null;
@@ -23,39 +24,10 @@ const FileList: React.FC<FileListProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const myApiUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/korisnici/${userId}/datoteke`;
-
-  // Function to handle file download
-  const handleFileDownload = (fileName: string, userToken: string | null) => {
-    // Construct the Azure Blob Storage URL with the dynamic file name
-    const azureBlobUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DownloadFile?fileName=${fileName}`;
-
-    // Make a GET request to the Azure Blob Storage URL
-    axios
-      .get(azureBlobUrl, {
-        responseType: "blob",
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((response) => {
-        // Create a temporary URL for the blob data
-        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-        // Create an anchor element to trigger the download
-        const a = document.createElement("a");
-
-        a.href = blobUrl;
-        a.download = fileName; // Set the download attribute to specify the file name
-        document.body.appendChild(a);
-        a.click(); // Simulate a click event to trigger the download
-        window.URL.revokeObjectURL(blobUrl); // Release the blob URL
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-      });
-  };
+  const handleFileDownload = useFileHandler();
 
   // Function to handle file deletion
-  const handleItemDelete = (fileName: string, userToken: string | null) => {
+  const handleItemDelete = (fileId: number, userToken: string | null) => {
     // Show a confirmation dialog before deleting the file
     const confirmDelete = window.confirm(
       `Are you sure you want to delete this file?`
@@ -64,7 +36,7 @@ const FileList: React.FC<FileListProps> = ({
     if (confirmDelete) {
       axios
         .delete(
-          `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DeleteFile?fileName=${fileName}`,
+          `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DeleteFile?idDatoteke=${fileId}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`,
@@ -74,7 +46,7 @@ const FileList: React.FC<FileListProps> = ({
         .then(() => {
           // Remove the deleted file from the list
           setFiles((prevFiles) =>
-            prevFiles.filter((file) => file.naziv !== fileName)
+            prevFiles.filter((file) => file.naziv !== fileId.toString())
           );
 
           console.log("File deleted successfully");
@@ -122,14 +94,14 @@ const FileList: React.FC<FileListProps> = ({
             <button
               className="file-download"
               title="Download"
-              onClick={() => handleFileDownload(file.naziv, userToken)}
+              onClick={() => handleFileDownload(file.id, userToken, file.naziv)}
             >
               <FaDownload />
             </button>
             <button
               className="file-delete"
               title="Delete"
-              onClick={() => handleItemDelete(file.naziv, userToken)}
+              onClick={() => handleItemDelete(file.id, userToken)}
             >
               <FaTrash />
             </button>
