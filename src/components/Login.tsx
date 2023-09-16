@@ -41,13 +41,17 @@ const Login: React.FC = () => {
         const userToken = data.token;
         const roles = data.ovlast;
         const userId = data.id;
+        const ustanovaId = data.skolskaUstanovaId;
 
         if (roles.includes("voditeljUstanove")) {
-          login(userToken, roles, userId);
+          login(userToken, roles, userId, ustanovaId);
           navigate("/admin", { replace: true, state: { userToken } });
-        } else if (roles.includes("admin") || roles.includes("korisnik")) {
-          login(userToken, roles, userId);
+        } else if (roles.includes("korisnik")) {
+          login(userToken, roles, userId, ustanovaId);
           navigate("/", { replace: true, state: { userToken } });
+        } else if (roles.includes("admin")) {
+          login(userToken, roles, userId, ustanovaId);
+          navigate("/developer", { replace: true, state: { userToken } });
         }
       } else {
         console.log("Login failed");

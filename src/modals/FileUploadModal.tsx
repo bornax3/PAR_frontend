@@ -83,7 +83,8 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   useEffect(() => {
     axios
       .get(
-        "http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/aktivnosti"
+        "http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/aktivnosti",
+        { headers: { Authorization: `Bearer ${userToken}` } }
       )
       .then((response) => {
         setActivities(response.data);

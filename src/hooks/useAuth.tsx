@@ -13,9 +13,12 @@ const useAuth = () => {
     const storedToken = localStorage.getItem("userToken");
     const storedRoles = JSON.parse(localStorage.getItem("roles") || "null");
     const storedUserId = JSON.parse(localStorage.getItem("userId") || "null");
+    const storedUstanovaId = JSON.parse(
+      localStorage.getItem("ustanovaId") || "null"
+    );
 
     if (storedToken && storedRoles !== "null" && storedUserId !== "null") {
-      context.login(storedToken, storedRoles, storedUserId);
+      context.login(storedToken, storedRoles, storedUserId, storedUstanovaId);
     }
   }, [context]);
 

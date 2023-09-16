@@ -10,8 +10,8 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: string[] }) => {
     ? allowedRoles.some((role) => roles.includes(role))
     : false;
 
-  console.log("Roles in require auth:", roles);
-  console.log("Allowed Roles:", allowedRoles);
+  //console.log("Roles in require auth:", roles);
+  //console.log("Allowed Roles:", allowedRoles);
 
   return userToken && isAuthorized ? (
     <Outlet />

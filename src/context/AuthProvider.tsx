@@ -10,7 +10,13 @@ interface AuthContextType {
   userToken: string | null;
   roles: string[] | null;
   userId: number | null;
-  login: (token: string, roles: string[], userId: number) => void;
+  ustanovaId: number | null;
+  login: (
+    token: string,
+    roles: string[],
+    userId: number,
+    ustanovaId: number
+  ) => void;
   logout: () => void;
 }
 
@@ -18,6 +24,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userToken, setUserToken] = useState<string | null>(
     localStorage.getItem("userToken") || null
   );
+
   const storedRoles = JSON.parse(localStorage.getItem("roles") || "null");
   const [roles, setRoles] = useState<string[] | null>(
     storedRoles !== "null" ? storedRoles : null
@@ -28,28 +35,46 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     storedUserId !== null ? storedUserId : null
   );
 
-  const login = (token: string, userRoles: string[], id: number) => {
+  const storedUstanovaId = JSON.parse(
+    localStorage.getItem("ustanovaId") || "null"
+  );
+  const [ustanovaId, setUstanovaId] = useState<number | null>(
+    storedUstanovaId !== null ? storedUstanovaId : null
+  );
+
+  const login = (
+    token: string,
+    userRoles: string[],
+    id: number,
+    ustanovaId: number
+  ) => {
     setUserToken(token);
     setRoles(userRoles);
     setUserId(id);
+    setUstanovaId(ustanovaId);
 
     localStorage.setItem("userToken", token);
     localStorage.setItem("roles", JSON.stringify(userRoles));
     localStorage.setItem("userId", JSON.stringify(id));
+    localStorage.setItem("ustanovaId", JSON.stringify(ustanovaId));
   };
 
   const logout = () => {
     setUserToken(null);
     setRoles(null);
     setUserId(null);
+    setUstanovaId(null);
 
     localStorage.removeItem("userToken");
     localStorage.removeItem("roles");
     localStorage.removeItem("userId");
+    localStorage.removeItem("ustanovaId");
   };
 
   return (
-    <AuthContext.Provider value={{ userToken, login, logout, roles, userId }}>
+    <AuthContext.Provider
+      value={{ userToken, login, logout, roles, userId, ustanovaId }}
+    >
       {children}
     </AuthContext.Provider>
   );

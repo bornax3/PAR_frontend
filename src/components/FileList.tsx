@@ -36,7 +36,7 @@ const FileList: React.FC<FileListProps> = ({
     if (confirmDelete) {
       axios
         .delete(
-          `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DeleteFile?idDatoteke=${fileId}`,
+          `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DeleteFile/${fileId}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`,
@@ -46,7 +46,7 @@ const FileList: React.FC<FileListProps> = ({
         .then(() => {
           // Remove the deleted file from the list
           setFiles((prevFiles) =>
-            prevFiles.filter((file) => file.naziv !== fileId.toString())
+            prevFiles.filter((file) => file.id !== fileId)
           );
 
           console.log("File deleted successfully");
@@ -73,7 +73,7 @@ const FileList: React.FC<FileListProps> = ({
       .catch((error) => {
         console.error("Error fetching files:", error);
       });
-  }, [fileUploaded]);
+  }, [userToken, fileUploaded]);
 
   return (
     <ul className="file-list">

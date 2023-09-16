@@ -11,7 +11,11 @@ import RequireAuth from "./components/RequireAuth";
 import Layout from "./pages/Layout";
 import SchoolAdmin from "./pages/SchoolAdmin";
 import Account from "./pages/Account";
-import Admin from "./pages/Admin";
+import Developer from "./pages/Developer";
+import Schools from "./pages/Schools";
+import Admins from "./pages/Admins";
+import Professors from "./pages/Professors";
+import Files from "./pages/Files";
 
 function App() {
   return (
@@ -20,6 +24,17 @@ function App() {
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="unauthorized" element={<Unauthorized />} />
+
+      {/* admin (promijenjeno da nema / za layout, vidi ako to stvara probleme da tako bude i dalje)*/}
+      <Route element={<RequireAuth allowedRoles={["admin"]} />}>
+        <Route element={<Layout />}>
+          <Route path="/developer" element={<Developer />} />
+          <Route path="/schools" element={<Schools />} />
+          <Route path="/admins" element={<Admins />} />
+          <Route path="/professors" element={<Professors />} />
+          <Route path="/files" element={<Files />} />
+        </Route>
+      </Route>
 
       {/* admin and korisnik */}
       <Route element={<RequireAuth allowedRoles={["admin", "korisnik"]} />}>

@@ -1,3 +1,11 @@
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
 /* Style for the UserList component itself */
 .user-list {
   width: 100%;
@@ -6,7 +14,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Center the user list vertically */
+}
+
+/* Style for the search input */
+.search-input {
+  width: 100%;
+  margin: 10px 0; /* Add some margin to separate the search input from the user list */
+  padding: 5px; /* Add padding to the search input for better appearance */
 }
 
 /* Style for individual user items */
@@ -25,12 +40,6 @@
 .user-details {
   flex: 1;
   margin-right: 10px;
-}
-
-.search-input {
-  width: 100%;
-  margin: 0; /* Remove any default margin */
-  padding: 0; /* Remove any default padding */
 }
 
 /* Style for hover */

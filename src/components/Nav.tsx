@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 //import "../css/Nav.css";
 import "../css/Layout.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import AuthContext from "../context/AuthProvider";
@@ -11,18 +11,17 @@ const Nav: React.FC = () => {
   const navigate = useNavigate();
   const navRef = useRef<HTMLDivElement>(null);
   const roles = useContext(AuthContext);
+  const location = useLocation();
 
   let destination = ""; // Default destination
 
   // Check the user's role and set the destination accordingly
-  if (roles && roles.roles && roles.roles.includes("adminUstanove")) {
+  if (roles && roles.roles && roles.roles.includes("voditeljUstanove")) {
     destination = "/admin";
-  } else if (
-    roles &&
-    ((roles && roles.roles && roles.roles.includes("admin")) ||
-      (roles && roles.roles && roles.roles.includes("korisnik")))
-  ) {
+  } else if (roles && roles.roles && roles.roles.includes("korisnik")) {
     destination = "/";
+  } else if (roles && roles.roles && roles.roles.includes("admin")) {
+    destination = "/developer";
   }
 
   const toggleMenu = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -55,8 +54,21 @@ const Nav: React.FC = () => {
     };
   }, [menuOpen]);
 
+  // Create a breadcrumb navigation based on the current pathname
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+
   return (
     <nav className="navbar">
+      <div className="breadcrumb">
+        {pathSegments.map((segment, index) => (
+          <span key={index}>
+            <Link to={"/" + pathSegments.slice(0, index + 1).join("/")}>
+              {segment}
+            </Link>
+            {index < pathSegments.length - 1 && " > "}
+          </span>
+        ))}
+      </div>
       <div className="home-icon-div">
         <Link to={destination} title="Home" className="home-icon">
           <FaHome size={30} />
@@ -74,11 +86,6 @@ const Nav: React.FC = () => {
       {menuOpen && (
         <div ref={navRef}>
           <ul className="menu-dropdown">
-            <li>
-              <Link to="/account" className="menu-item">
-                Account Settings
-              </Link>
-            </li>
             <li>
               <button className="menu-button" onClick={handleLogout}>
                 Logout

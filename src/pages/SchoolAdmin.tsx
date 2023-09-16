@@ -4,13 +4,13 @@ import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";
 
 const SchoolAdmin = () => {
-  const { userToken, userId } = useAuth();
+  const { userToken, userId, ustanovaId } = useAuth();
 
   return (
     <main>
       <Nav />
       <Sidebar />
-      <UserList userId={userId} userToken={userToken} />
+      <UserList userId={userId} userToken={userToken} ustanovaId={ustanovaId} />
     </main>
   );
 };

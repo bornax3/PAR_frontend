@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../css/UserList.css";
-import { FaTrash, FaFolder, FaCheckSquare } from "react-icons/fa";
+import { FaFolder } from "react-icons/fa";
 import axios from "axios";
 import UserFileModal from "../modals/UserFileModal";
 
 interface UserListProps {
-  userId: number | null;
+  userId: number | null | undefined;
   userToken: string | null;
+  ustanovaId: number | null | undefined;
 }
 
 export interface User {
@@ -16,11 +17,14 @@ export interface User {
   poz_broj: string;
   broj: string;
   ovlast: string;
-  skolskaUstanova: string;
 }
 
-const UserList: React.FC<UserListProps> = ({ userId, userToken }) => {
-  const myApiUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/skolskeustanove/clanovi?idUstanove=1`;
+const UserList: React.FC<UserListProps> = ({
+  userId,
+  userToken,
+  ustanovaId,
+}) => {
+  const myApiUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/skolskeustanove/clanovi/${ustanovaId}`;
   const [users, setUsers] = useState<User[]>([]);
   const [isUserFileModalOpen, setIsUserFileModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -66,7 +70,7 @@ const UserList: React.FC<UserListProps> = ({ userId, userToken }) => {
   }, []);
 
   return (
-    <div>
+    <div className="content">
       {/* Search input */}
       <input
         className="search-input"

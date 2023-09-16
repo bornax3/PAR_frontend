@@ -8,7 +8,7 @@ const useFileHandler = () => {
     fileName: string
   ) => {
     // Construct the Azure Blob Storage URL with the dynamic file name
-    const azureBlobUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DownloadFile?idDatoteke=${idDatoteke}`;
+    const azureBlobUrl = `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager/DownloadFile/${idDatoteke}`;
     // Make a GET request to the Azure Blob Storage URL
     axios
       .get(azureBlobUrl, {
