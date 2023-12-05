@@ -1,5 +1,29 @@
 # Getting Started with Create React App
 
+Purpose:
+
+The purpose of this desktop application is to streamline and enhance the management of educational resources within institutions. Designed for teachers, institution managers, and administrators, the app aims to provide a user-friendly platform for efficient file handling, verifying and overall system control.
+
+Specs:
+
+Desktop app for repository management
+User roles: Teacher, Institution Manager, Administrator
+User authentication based on unique email and a password
+Password security standards enforced
+Teacher login provides access to file management
+Institution Manager verifies and confirms teacher files
+Administrator role for overall system control
+Four main tabs: Institutions, Admins, Professors, Files
+CRUD operations for users and files
+Search and filter options for efficient user and file management
+Seamless navigation with a clear user interface
+Role-specific dashboards with relevant functionalities
+Use of UIVerse tool for creating a user-friendly interface
+Integration of Font Awesome icons for enhanced user experience
+Detailed file information, validation, and filtering options
+Modal for detailed file view with download and validation features
+Responsive design for optimal user experience
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
