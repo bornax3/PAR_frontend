@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
-import Select from "react-select";
 import { FaTrash } from "react-icons/fa";
-import "../css/FileUploadModal.css";
+import "../css/Modal.css";
+import { message } from "antd";
 
 interface FileUploadModalProps {
   isOpen: boolean;
@@ -14,7 +14,8 @@ interface FileUploadModalProps {
 interface Activity {
   id: number;
   opis: string;
-  value: number;
+  //value: number;
+  datumKreiranja: String;
 }
 
 const FileUploadModal: React.FC<FileUploadModalProps> = ({
@@ -32,6 +33,11 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleCloseModal = () => {
+    onClose();
+  };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -73,12 +79,6 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
     }
   };
 
-  const handleActivityChange = (selectedOption: Activity | null) => {
-    setSelectedActivity(selectedOption);
-    console.log(`Option selected:`, selectedOption);
-    console.log(`Option opis:`, selectedOption?.opis);
-  };
-
   // Fetch activities for the dropdown
   useEffect(() => {
     axios
@@ -97,18 +97,21 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
 
   // Send files to backend
   const handleFileSubmit = async () => {
+    console.log("Selected files:", selectedFiles);
+    console.log("Selected activity:", selectedActivityId);
+
+    if (selectedFiles.length === 0 || selectedActivityId === "") {
+      message.error("Molimo odaberite datoteku i kategoriju");
+      return;
+    }
     const apiUrl =
       "http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/filemanager";
 
     const formData = new FormData();
+
     selectedFiles.forEach((file) => {
-      if (file && selectedActivity) {
-        formData.append(`fileName`, file);
-        formData.append("aktivnostId", selectedActivity.value.toString());
-        console.log("File:", file);
-      } else {
-        console.error("Error: file or activity is undefined");
-      }
+      formData.append("files", file);
+      formData.append("aktivnostId", selectedActivityId);
     });
 
     try {
@@ -120,20 +123,117 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
       });
 
       if (response.status >= 200 && response.status < 300) {
+        message.success("Datoteka je uspješno učitana");
         console.log("Files uploaded successfully");
 
         onUploadSuccess();
         setSelectedFiles([]);
+        onClose();
       } else {
         console.error("File upload failed. Server returned:", response.status);
+        message.error("Greška pri učitavanju datoteke");
       }
     } catch (error) {
-      console.error("An error occurred during file upload:", error);
+      if (axios.isAxiosError(error)) {
+        message.error(error.response?.data || "Došlo je do pogreške");
+      }
     }
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        handleCloseModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
+  const [selectedActivityId, setSelectedActivityId] = useState("");
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = e.target.value;
+    setSelectedActivityId(selectedId);
+  };
+
   return (
-    <div
+    <div className="modalBackground">
+      <div
+        className="modal"
+        ref={modalRef}
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
+        <div className="modalBodyShort" onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`modalDropArea ${isDragActive ? "active" : ""}`}
+            onClick={handleBrowseClick}
+          >
+            <p>
+              Povuci i ispusti datoteke ovdje <br /> ili <br /> Klikni za
+              pretraživanje
+            </p>
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
+          />
+          <div className="filePreviewContainer">
+            {selectedFiles.map((file, index) => (
+              <div key={index} className="filePreviewItem">
+                <span>{file.name}</span>
+                <button
+                  className="itemButton"
+                  onClick={() => handleFileRemove(index)}
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="dropdown">
+            <select
+              className="inputField"
+              defaultValue=""
+              title="Odaberite kategoriju datoteke"
+              required
+              onChange={handleSelectChange}
+            >
+              <option value="" disabled>
+                Odaberite kategoriju
+              </option>
+              {activities.map((activity: any) => (
+                <option key={activity.id} value={activity.id}>
+                  {activity.opis}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="modalFooterBottom">
+            <button className="cancelButton" type="button" onClick={onClose}>
+              Odustani
+            </button>
+            <button
+              className="actionButton"
+              type="button"
+              onClick={handleFileSubmit}
+            >
+              Spremi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    /*<div
       className={`file-upload-modal ${isOpen ? "open" : ""}`}
       onClick={onClose}
       onDrop={handleFileDrop}
@@ -144,13 +244,13 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
         className={`modal-content ${isDragActive ? "active" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2>Upload File</h2>
         <div
           className={`drop-area ${isDragActive ? "active" : ""}`}
           onClick={handleBrowseClick}
         >
           <p>
-            Drag and drop files here <br /> or <br /> click to browse
+            Povuci i ispusti datoteke ovdje <br /> ili <br /> Klikni za
+            pretraživanje
           </p>
         </div>
         <input
@@ -160,26 +260,50 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
           style={{ display: "none" }}
         />
         {selectedFiles.length > 0 && (
-          <div className="dropdown">
-            <Select
-              options={activities.map((activity) => ({
-                value: activity.id,
-                label: activity.opis,
-              }))}
-              value={
-                selectedActivity
-                  ? {
-                      value: selectedActivity.id,
-                      label: selectedActivity.opis,
-                    }
-                  : null
-              }
-              onChange={(selectedOption) =>
-                handleActivityChange(selectedOption as Activity | null)
-              }
-              isSearchable
-              placeholder="Please select activity"
-            />
+          // <div className="dropdown">
+          //   <Select
+          //     options={activities.map((activity) => ({
+          //       value: activity.id,
+          //       label: activity.opis,
+          //     }))}
+          //     value={
+          //       selectedActivity
+          //         ? {
+          //             value: selectedActivity.id,
+          //             label: selectedActivity.opis,
+          //           }
+          //         : null
+          //     }
+          //     onChange={(selectedOption) =>
+          //       handleActivityChange(selectedOption as Activity | null)
+          //     }
+          //     isSearchable
+          //     placeholder="Please select activity"
+          //   />
+          // </div>
+          <div className="inputContainer">
+            <select
+              className="inputField"
+              //value={napredovanje}
+              //onChange={(e) => setNapredovanje(e.target.value)}
+              title="Odaberite kategoriju datoteke"
+              required
+              /*onInvalid={(e) => {
+                e.currentTarget.setCustomValidity("Molimo odaberite zvanje.");
+              }}
+              onInput={(e) => {
+                e.currentTarget.setCustomValidity("");
+              }}*/
+    /*>
+              <option value="" disabled>
+                Kategorija
+              </option>
+              {activities.map((activity: any) => (
+                <option key={activity.id} value={activity.id}>
+                  {activity.opis}
+                </option>
+              ))}
+            </select>
           </div>
         )}
         <div className="file-preview">
@@ -187,7 +311,7 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
             <div key={index} className="file-preview-item">
               <span>{file.name}</span>
               <button
-                className="remove-button"
+                className="itemButton"
                 onClick={() => handleFileRemove(index)}
               >
                 <FaTrash />
@@ -195,19 +319,21 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
             </div>
           ))}
         </div>
-        <button
-          className="submit-button"
-          type="button"
-          onClick={handleFileSubmit}
-          disabled={selectedActivity === null || selectedFiles.length === 0}
-        >
-          Submit
-        </button>
-        <button className="submit-button" type="button" onClick={onClose}>
-          Close
-        </button>
+        <div className="modalFooter">
+          <button className="cancelButton" type="button" onClick={onClose}>
+            Odustani
+          </button>
+          <button
+            className="actionButton"
+            type="button"
+            onClick={handleFileSubmit}
+            disabled={selectedActivity === null || selectedFiles.length === 0}
+          >
+            Spremi
+          </button>
+        </div>
       </div>
-    </div>
+    </div>*/
   );
 };
 

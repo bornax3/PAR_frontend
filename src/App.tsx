@@ -1,13 +1,14 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { isExpired } from "react-jwt";
 import "./css/App.css";
 
 // Pages and Components
 import Register from "./pages/Register";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Missing from "./pages/Missing";
 import Unauthorized from "./pages/Unauthorized";
-import RequireAuth from "./components/RequireAuth";
 import Layout from "./pages/Layout";
 import SchoolAdmin from "./pages/SchoolAdmin";
 import Account from "./pages/Account";
@@ -16,8 +17,21 @@ import Schools from "./pages/Schools";
 import Admins from "./pages/Admins";
 import Professors from "./pages/Professors";
 import Files from "./pages/Files";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("userToken");
+  const isMyTokenExpired = token ? isExpired(token) : false;
+
+  // Handle expired token
+  useEffect(() => {
+    if (isMyTokenExpired) {
+      navigate("/login", { state: { isSessionExpired: true } });
+      localStorage.clear();
+    }
+  }, [isMyTokenExpired]);
+
   return (
     <Routes>
       {/* public routes */}
@@ -25,7 +39,7 @@ function App() {
       <Route path="register" element={<Register />} />
       <Route path="unauthorized" element={<Unauthorized />} />
 
-      {/* admin (promijenjeno da nema / za layout, vidi ako to stvara probleme da tako bude i dalje)*/}
+      {/* admin */}
       <Route element={<RequireAuth allowedRoles={["admin"]} />}>
         <Route element={<Layout />}>
           <Route path="/developer" element={<Developer />} />
@@ -38,7 +52,7 @@ function App() {
 
       {/* admin and korisnik */}
       <Route element={<RequireAuth allowedRoles={["admin", "korisnik"]} />}>
-        <Route path="/" element={<Layout />}>
+        <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
         </Route>
       </Route>
@@ -47,7 +61,7 @@ function App() {
       <Route
         element={<RequireAuth allowedRoles={["admin", "voditeljUstanove"]} />}
       >
-        <Route path="/" element={<Layout />}>
+        <Route element={<Layout />}>
           <Route path="/admin" element={<SchoolAdmin />} />
         </Route>
       </Route>
@@ -60,7 +74,7 @@ function App() {
           />
         }
       >
-        <Route path="/" element={<Layout />}>
+        <Route element={<Layout />}>
           <Route path="account" element={<Account />} />
         </Route>
       </Route>

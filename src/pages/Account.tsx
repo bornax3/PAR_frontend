@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import "../css/Account.css";
+import { message } from "antd";
 
 const AccountSettings: React.FC = () => {
   const navigate = useNavigate();
@@ -29,9 +31,13 @@ const AccountSettings: React.FC = () => {
         );
         const userDataFromApi = response.data; // Assuming your API response matches the structure of userData
         setUserData(userDataFromApi);
-        console.log("User data fetched:", userDataFromApi);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        if (axios.isAxiosError(error)) {
+          message.error(
+            error.response?.data ||
+              "Došlo je do pogreške pri učitavanju podataka"
+          );
+        }
       }
     };
 
@@ -67,8 +73,11 @@ const AccountSettings: React.FC = () => {
         }
       );
       console.log("User data updated:", response.data);
+      message.success("Podaci uspješno ažurirani");
     } catch (error) {
-      console.error("Error updating user data:", error);
+      if (axios.isAxiosError(error)) {
+        message.error(error.response?.data || "Došlo je do pogreške");
+      }
     }
   };
 
@@ -85,44 +94,54 @@ const AccountSettings: React.FC = () => {
         }
       );
       console.log("Account deleted:", response.data);
+      message.success("Račun uspješno obrisan");
       navigate("/login");
     } catch (error) {
-      console.error("Error deleting account:", error);
+      if (axios.isAxiosError(error)) {
+        message.error(error.response?.data || "Došlo je do pogreške");
+      }
     }
   };
 
   return (
-    <div>
-      <h1>Account Settings</h1>
-      <div>
-        <label>First Name:</label>
-        <input
-          type="text"
-          name="ime"
-          value={userData.ime}
-          onChange={handleInputChange}
-        />
+    <div className="accountContainer">
+      <h1 className="accountHeader">Postavke profila</h1>
+      <div className="accountContent">
+        <div className="accountInput">
+          <label>Ime</label>
+          <input
+            className="accountInputField"
+            type="text"
+            name="ime"
+            value={userData.ime}
+            onChange={handleInputChange}
+          />
+          <label>Prezime</label>
+          <input
+            className="accountInputField"
+            type="text"
+            name="prezime"
+            value={userData.prezime}
+            onChange={handleInputChange}
+          />
+          <label>Broj mobitela</label>
+          <input
+            className="accountInputField"
+            type="tel"
+            name="brojMobitela"
+            value={userData.brojMobitela}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="accountFooter">
+          <button className="actionButton" onClick={updateUserData}>
+            Ažuriraj
+          </button>
+          <button className="deleteButton" onClick={deleteAccount}>
+            Obriši Račun
+          </button>
+        </div>
       </div>
-      <div>
-        <label>Last Name:</label>
-        <input
-          type="text"
-          name="prezime"
-          value={userData.prezime}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Phone Number:</label>
-        <input
-          type="tel"
-          name="brojMobitela"
-          value={userData.brojMobitela}
-          onChange={handleInputChange}
-        />
-      </div>
-      <button onClick={updateUserData}>Update</button>
-      <button onClick={deleteAccount}>Delete Account</button>
     </div>
   );
 };

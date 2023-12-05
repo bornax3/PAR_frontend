@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { School } from "../components/SchoolList";
-import axios from "axios"; // Import Axios for making API requests
-import "../css/SchoolEditModal.css";
+import axios from "axios";
+import "../css/Modal.css";
+import { message } from "antd";
 
 interface SchoolEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   userToken: string | null;
   school: School | null;
+  refreshSchoolList: () => void;
 }
 
 const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
@@ -15,6 +17,7 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
   onClose,
   userToken,
   school,
+  refreshSchoolList,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [updatedSchool, setUpdatedSchool] = useState<School | null>(null);
@@ -30,28 +33,16 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
     }
   }, [school]);
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        handleCloseModal();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    } else {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [isOpen, handleCloseModal]);
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    // Update the updatedSchool state with the new value
+    setUpdatedSchool((prevSchool) => ({
+      ...prevSchool!,
+      [name]: value,
+    }));
   };
 
   const handleSaveChanges = async () => {
@@ -68,26 +59,44 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
           }
         );
         console.log("School data updated:", response.data);
+        message.success("Škola uspješno ažurirana!");
+        refreshSchoolList();
 
         // Close the modal after successful update
         onClose();
       } catch (error) {
-        console.error("Error updating school data:", error);
+        if (axios.isAxiosError(error)) {
+          message.error(error.response?.data || "Došlo je do pogreške");
+        }
       }
     }
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        handleCloseModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className={`modal-container ${isOpen ? "open" : ""}`}>
-      <div
-        className={`school-edit-modal ${isOpen ? "open" : ""}`}
-        ref={modalRef}
-      >
-        <div className="school-edit-modal-header">
-          <h2>Edit School</h2>
+    <div className="modalBackground">
+      <div className="modal" ref={modalRef}>
+        <div className="modalHeader">
+          <h2>Uredi školu</h2>
+          <button className="closeButton" onClick={handleCloseModal}>
+            x
+          </button>
         </div>
-        <div className="school-edit-modal-details">
-          <div>
+        <div className="modalBodyShort">
+          <div className="formGroup">
             <label>Naziv:</label>
             <input
               type="text"
@@ -96,7 +105,7 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          <div className="formGroup">
             <label>Email:</label>
             <input
               type="email"
@@ -105,7 +114,7 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          <div className="formGroup">
             <label>Adresa:</label>
             <input
               type="text"
@@ -114,7 +123,7 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          <div className="formGroup">
             <label>Kontakt:</label>
             <input
               type="text"
@@ -123,7 +132,7 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
               onChange={handleInputChange}
             />
           </div>
-          <div>
+          <div className="formGroup">
             <label>Web:</label>
             <input
               type="text"
@@ -134,12 +143,12 @@ const SchoolEditModal: React.FC<SchoolEditModalProps> = ({
           </div>
           {/* Add more input fields for other school properties */}
         </div>
-        <div className="school-edit-modal-buttons">
-          <button className="save-button" onClick={handleSaveChanges}>
-            Save Changes
+        <div className="modalFooter">
+          <button className="cancelButton" onClick={handleCloseModal}>
+            Odustani
           </button>
-          <button className="cancel-button" onClick={handleCloseModal}>
-            Cancel
+          <button className="actionButton" onClick={handleSaveChanges}>
+            Spremi
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ const Developer = () => {
       case "profesori":
         navigate("/professors");
         break;
-      case "datoteke":
+      case "kriteriji":
         navigate("/files");
         break;
       default:
@@ -25,19 +25,21 @@ const Developer = () => {
   };
 
   return (
-    <div className="card-grid">
-      <a className="card" onClick={() => handleNavigation("ustanove")}>
-        Ustanove
-      </a>
-      <a className="card" onClick={() => handleNavigation("admini")}>
-        Admini
-      </a>
-      <a className="card" onClick={() => handleNavigation("profesori")}>
-        Profesori
-      </a>
-      <a className="card" onClick={() => handleNavigation("datoteke")}>
-        Datoteke
-      </a>
+    <div className="content-developer">
+      <div className="card-grid">
+        <a className="card" onClick={() => handleNavigation("ustanove")}>
+          Škole
+        </a>
+        <a className="card" onClick={() => handleNavigation("admini")}>
+          Admini
+        </a>
+        <a className="card" onClick={() => handleNavigation("profesori")}>
+          Profesori
+        </a>
+        <a className="card" onClick={() => handleNavigation("kriteriji")}>
+          Kriteriji
+        </a>
+      </div>
     </div>
   );
 };

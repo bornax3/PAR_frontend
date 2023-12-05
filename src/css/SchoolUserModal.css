@@ -31,7 +31,7 @@
 }
 
 /* Style for content container */
-.content {
+.content-schooluser-modal {
   flex-grow: 1; /* Content container takes remaining space */
   display: flex;
   flex-direction: column;

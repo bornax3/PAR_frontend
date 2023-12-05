@@ -29,27 +29,29 @@ const Home = () => {
   }, [fileUploaded]);
 
   return (
-    <main className="main">
+    <div className="home">
       <FileList
         userId={userId}
         userToken={userToken}
         fileUploaded={fileUploaded}
       />
-      <FileUploadModal
-        isOpen={isFileUploadModalOpen}
-        onClose={() => setIsFileUploadModalOpen(false)}
-        userToken={userToken}
-        onUploadSuccess={handleFileUploadSuccess}
-      />
-
+      {isFileUploadModalOpen && (
+        <FileUploadModal
+          isOpen={isFileUploadModalOpen}
+          onClose={() => setIsFileUploadModalOpen(false)}
+          userToken={userToken}
+          onUploadSuccess={handleFileUploadSuccess}
+        />
+      )}
       <button
         type="button"
-        className="toggle-button"
+        className="buttonAdd"
+        title="Učitaj datoteku"
         onClick={toggleFileUploadModal}
       >
-        Upload File
+        +
       </button>
-    </main>
+    </div>
   );
 };
 

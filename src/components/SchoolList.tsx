@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaEdit, FaUsers } from "react-icons/fa";
-import SchoolEditModal from "../modals/SchoolEditModal";
+import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
+import EditSchoolModal from "../modals/EditSchoolModal";
 import SchoolUserModal from "../modals/SchoolUserModal";
-import "../css//SchoolList.css";
+import "../css/List.css";
+import { message } from "antd";
 
 interface SchoolListProps {
   userToken: string | null;
@@ -11,12 +12,11 @@ interface SchoolListProps {
 
 export interface School {
   id: number | null;
-  naziv: string | null; // Change to 'naziv' for school name
+  naziv: string | null;
   email: string | null;
   adresa: string | null;
   web: string | null;
   kontakt: string | null;
-  // Other fields...
 }
 
 const SchoolList: React.FC<SchoolListProps> = ({ userToken }) => {
@@ -45,6 +45,23 @@ const SchoolList: React.FC<SchoolListProps> = ({ userToken }) => {
       });
   }, []);
 
+  const refreshSchoolList = () => {
+    // Refresh after edit school
+    axios
+      .get(myApiUrl, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => {
+        setSchools(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
+
   const toggleSchoolEditModal = (school: School) => {
     setSelectedSchool(school);
     console.log("School information: ", school);
@@ -53,7 +70,6 @@ const SchoolList: React.FC<SchoolListProps> = ({ userToken }) => {
 
   const toggleSchoolUserModal = (school: School) => {
     setSelectedSchool(school);
-    console.log("School information When listing users: ", school);
     setIsSchoolUserModalOpen(!isSchoolUserModalOpen);
   };
 
@@ -75,50 +91,97 @@ const SchoolList: React.FC<SchoolListProps> = ({ userToken }) => {
     setFilteredSchools(filtered);
   }, [searchQuery, schools]);
 
+  const handleDelete = (schoolId: number | null) => {
+    // Show a confirmation dialog before deleting the school
+    const confirmDelete = window.confirm(
+      `Jeste li sigurni da želite obrisati školu?`
+    );
+
+    if (confirmDelete) {
+      axios
+        .delete(
+          `http://parapibackend.fwfre3f6f6arc6f3.westeurope.azurecontainer.io/api/SkolskeUstanove/${schoolId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        )
+        .then(() => {
+          // Remove the deleted school from the list
+          setSchools((prevSchools) =>
+            prevSchools.filter((school) => school.id !== schoolId)
+          );
+
+          console.log("School deleted successfully");
+          message.success("Škola uspješno obrisana!");
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error)) {
+            message.error(error.response?.data || "Došlo je do pogreške");
+          }
+        });
+    }
+  };
+
   return (
-    <div className="content">
-      {/* Search input */}
+    <div className="listContent">
       <input
-        className="search-input"
+        className="listSearch"
         type="text"
-        placeholder="Search schools"
+        placeholder="Pretraži škole"
         value={searchQuery}
         onChange={handleSearchInputChange}
       />
-      <ul className="school-list">
-        {filteredSchools.map((school, index) => (
-          <li className="school-item" key={index}>
-            <div className="school-details">
-              <div>{school.naziv}</div>
-              <div>
-                <span>{school.email}</span>
+      <ul className="itemList">
+        {filteredSchools.length > 0 ? (
+          filteredSchools.map((school, index) => (
+            <li className="listItem" key={index}>
+              <div className="listItemDetails">
+                <div className="listItemName">{school.naziv}</div>
+                <div className="listItemDescription">
+                  <span className="listItemSection">{school.email}</span>
+                </div>
               </div>
-            </div>
-            <div className="item-button">
-              <button
-                type="button"
-                className="item-edit"
-                onClick={() => toggleSchoolEditModal(school)}
-              >
-                <FaEdit />
-              </button>
-              <button
-                type="button"
-                className="item-users"
-                onClick={() => toggleSchoolUserModal(school)}
-              >
-                <FaUsers />
-              </button>
-            </div>
-          </li>
-        ))}
+              <div className="itemControl">
+                <button
+                  type="button"
+                  title="Korisnici"
+                  className="itemButton"
+                  onClick={() => toggleSchoolUserModal(school)}
+                >
+                  <FaUsers />
+                </button>
+                <button
+                  type="button"
+                  title="Uredi"
+                  className="itemButton"
+                  onClick={() => toggleSchoolEditModal(school)}
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  type="button"
+                  title="Obriši"
+                  className="itemButton"
+                  onClick={() => handleDelete(school.id)}
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </li>
+          ))
+        ) : (
+          <div className="noResults">Nema rezultata</div>
+        )}
       </ul>
       {isSchoolEditModalOpen && (
-        <SchoolEditModal
+        <EditSchoolModal
           isOpen={isSchoolEditModalOpen}
           onClose={() => setIsSchoolEditModalOpen(false)}
           userToken={userToken}
           school={selectedSchool}
+          refreshSchoolList={refreshSchoolList}
         />
       )}
       {isSchoolUserModalOpen && (

@@ -1,7 +1,23 @@
-import React from "react";
+import UserList from "../components/UserList";
+import useAuth from "../hooks/useAuth";
+import "../css/Admins.css";
 
 const Professors = () => {
-  return <div>Professors</div>;
+  const { userToken, userId, ustanovaId } = useAuth();
+
+  return (
+    <div className="usersContent">
+      <div className="user-list-container">
+        <UserList
+          userId={userId}
+          userToken={userToken}
+          ustanovaId={ustanovaId}
+          filterByRole={true}
+          filterFetchOption={"korisnik"}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default Professors;

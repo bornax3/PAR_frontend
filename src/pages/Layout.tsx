@@ -5,15 +5,13 @@ import "../css/Layout.css";
 
 const Layout = () => {
   return (
-    <div className="layout-container">
+    <>
       <Nav />
+      <Sidebar />
       <div className="content-container">
-        <Sidebar />
-        <div className="content">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
-    </div>
+    </>
   );
 };
 

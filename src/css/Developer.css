@@ -1,14 +1,22 @@
+.content-developer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+}
+
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns in each row */
-  grid-gap: 20px; /* Adjust the gap between cards as needed */
+  grid-template-columns: repeat(2, 1fr); /* 4 columns in each row */
+  grid-gap: 20px;
 }
 
 .card {
   box-sizing: border-box;
-  width: 254px;
-  height: 190px;
-  background: rgba(217, 217, 217, 0.58);
+  width: 304px;
+  height: 240px;
+  background: #749ccc;
   border: 1px solid white;
   box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(6px);
@@ -21,7 +29,7 @@
   justify-content: center;
   user-select: none;
   font-weight: bolder;
-  color: black;
+  color: white;
 }
 
 .card:hover {

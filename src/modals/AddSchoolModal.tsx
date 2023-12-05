@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../css/AddSchoolModal.css"; // Add your custom modal styles here
+import "../css/Modal.css"; // Add your custom modal styles here
 import axios from "axios";
+import { message } from "antd";
 
 interface AddSchoolModalProps {
   onClose: () => void;
   userToken: string | null;
+  onSchoolAdded: () => void;
 }
 
 const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   onClose,
   userToken,
+  onSchoolAdded,
 }) => {
   const [schoolInfo, setSchoolInfo] = useState({
     adresa: "",
@@ -47,11 +50,14 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
       )
       .then((response) => {
         console.log("School added successfully:", response.data);
-        // You can perform additional actions here if needed
-        handleClose(); // Close the modal
+        message.success("Škola uspješno dodana!");
+        onSchoolAdded();
+        handleClose();
       })
       .catch((error) => {
-        console.error("Error adding school:", error);
+        if (axios.isAxiosError(error)) {
+          message.error(error.response?.data || "Došlo je do pogreške");
+        }
       });
   };
 
@@ -71,72 +77,72 @@ const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   }, []);
 
   return (
-    <div className="modal-background">
+    <div className="modalBackground">
       <div className="modal" ref={modalRef}>
-        <div className="modal-header">
-          <h2>Add School</h2>
-          <button className="close-button" onClick={handleClose}>
-            X
+        <div className="modalHeader">
+          <h2>Dodaj školu</h2>
+          <button className="closeButton" onClick={handleClose}>
+            x
           </button>
         </div>
-        <div className="modal-body">
-          <div className="form-group">
+        <div className="modalBodyShort">
+          <div className="formGroup">
             <label>Naziv</label>
             <input
               type="text"
               name="naziv"
-              placeholder="Enter school name"
+              placeholder="Unesite ime škole"
               value={schoolInfo.naziv}
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="formGroup">
             <label>Adresa</label>
             <input
               type="text"
               name="adresa"
-              placeholder="Enter school address"
+              placeholder="Unesite adresu škole"
               value={schoolInfo.adresa}
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="formGroup">
             <label>Web</label>
             <input
               type="text"
               name="web"
-              placeholder="Enter school website"
+              placeholder="Unesite web stranicu škole"
               value={schoolInfo.web}
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="formGroup">
             <label>Kontakt</label>
             <input
               type="text"
               name="kontakt"
-              placeholder="Enter school contact information"
+              placeholder="Unesite kontakt škole"
               value={schoolInfo.kontakt}
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="formGroup">
             <label>Email</label>
             <input
               type="email"
               name="email"
-              placeholder="Enter school email"
+              placeholder="Unesite email škole"
               value={schoolInfo.email}
               onChange={handleInputChange}
             />
           </div>
         </div>
-        <div className="modal-footer">
-          <button className="cancel-button" onClick={handleClose}>
-            Cancel
+        <div className="modalFooter">
+          <button className="cancelButton" onClick={handleClose}>
+            Odustani
           </button>
-          <button className="add-button" onClick={handleAddSchool}>
-            Add School
+          <button className="actionButton" onClick={handleAddSchool}>
+            Dodaj
           </button>
         </div>
       </div>

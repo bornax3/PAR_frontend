@@ -1,0 +1,22 @@
+ToDo list
+
+- Za Register:
+    trebamo dodati za zvanje voditelj ustanove, ili da zvanje nije required ako je voditelj ustanove... nešto.
+
+error poruke:
+ - kod file uploada ako nešto fali ili je krivo
+
+
+- vraćanje grešaka sa backa i display
+
+- breadcrumbs
+
+- settings 
+    - Language
+    - Theme
+    - Notifications
+    - Privacy
+    - Security
+    - Help
+    - About
+    - Logout

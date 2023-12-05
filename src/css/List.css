@@ -1,4 +1,4 @@
-.fileContent {
+.listContent {
   width: 95%;
   margin: 0 auto;
   padding-top: 20px;
@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.fileListSearch {
+.listSearch {
   width: 70%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -16,7 +16,7 @@
   margin-block: 20px;
 }
 
-.fileList {
+.itemList {
   width: 100%;
   padding: 20px;
   display: flex;
@@ -28,7 +28,7 @@
   overflow-x: hidden;
 }
 
-.fileItem {
+.listItem {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -42,18 +42,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
 }
 
-.fileItemDetails {
-  width: 100%;
+.listItemCategory {
+  text-decoration: underline;
 }
 
-.status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(180, 189, 189);
-  background-color: rgb(216, 229, 229);
-  width: 15%;
-  cursor: default;
+.listItemDetails {
+  width: 100%;
 }
 
 .listItemDescription {
@@ -61,16 +55,32 @@
   padding-top: 10px;
 }
 
-.fileItemSection {
+.listItemSection {
   width: 25%;
 }
 
-.fileItemControl {
+.listItemSectionLong {
+  width: 50%;
+}
+
+.itemControl {
   display: flex;
   align-items: center;
 }
 
-.fileButton {
+.itemControlModified {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  justify-content: space-between;
+}
+
+.itemControl label {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemButton {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -79,20 +89,32 @@
   color: #112d4e;
 }
 
-.fileButton:hover {
+.itemButton:hover {
   transform: scale(1.2);
 }
 
-.approved {
+.itemLabel.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 54%;
   color: #09d51a;
 }
 
-.notApproved {
+.itemLabel.inactive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 54%;
   color: #ec0606;
 }
 
+.itemLabel:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
 /* FILTERS */
-/*
 .listFilter {
   display: flex;
   flex-direction: row;
@@ -149,4 +171,3 @@
 .buttonAdd:hover {
   transform: scale(1.2);
 }
-*/

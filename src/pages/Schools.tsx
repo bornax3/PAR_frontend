@@ -13,14 +13,19 @@ const Schools: React.FC = () => {
   // Ref to access the modal container
   const modalRef = useRef<HTMLDivElement>(null);
 
+  // State variable to trigger a refresh when a school is added
+  const [refreshSchoolList, setRefreshSchoolList] = useState(false);
+
   // Function to open AddSchoolModal
   const handleAddSchool = () => {
     setIsAddSchoolModalOpen(true);
   };
 
-  // Function to close AddSchoolModal
+  // Function to close AddSchoolModal and trigger a refresh
   const handleCloseModal = () => {
     setIsAddSchoolModalOpen(false);
+    // Set the state variable to trigger a refresh
+    setRefreshSchoolList(true);
   };
 
   // Close the modal when clicking outside of it
@@ -42,14 +47,26 @@ const Schools: React.FC = () => {
 
   return (
     <div className="content">
-      <h1 className="header">Schools</h1>
-      <SchoolList userToken={userToken} />
-      <button onClick={handleAddSchool}>+</button>
-
-      {/* Render the AddSchoolModal when isAddSchoolModalOpen is true */}
+      <h1 className="header">Škole</h1>
+      <SchoolList
+        key={refreshSchoolList ? "refresh" : "no-refresh"}
+        userToken={userToken}
+      />
+      <button
+        className="buttonAdd"
+        title="Dodaj školu"
+        onClick={handleAddSchool}
+      >
+        +
+      </button>
       {isAddSchoolModalOpen && (
         <div ref={modalRef}>
-          <AddSchoolModal onClose={handleCloseModal} userToken={userToken} />
+          <AddSchoolModal
+            onClose={handleCloseModal}
+            userToken={userToken}
+            // Pass the onSchoolAdded function to handle the notification
+            onSchoolAdded={() => setRefreshSchoolList(false)}
+          />
         </div>
       )}
     </div>

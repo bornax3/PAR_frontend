@@ -19,7 +19,6 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: none;
   justify-content: center;
@@ -30,6 +29,7 @@
 
 .file-upload-modal.open {
   display: flex;
+  height: 100%;
 }
 
 .modal-content {
@@ -37,10 +37,12 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 65%;
   display: flex;
   flex-direction: column;
-  width: 32%;
+  height: 60%;
+  min-height: 60%;
+  width: 45%;
+  max-width: 80%;
 }
 
 /* Modal header */
@@ -114,9 +116,16 @@
   color: #000000;
 }
 
+/*.css-13cymwt-control {
+  height: 60px;
+}*/
+
 .file-preview {
   margin-top: 10px;
   height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .file-preview-item {
@@ -131,7 +140,7 @@
   margin-top: 9px;
   margin-left: 15px;
   height: 50px;
-  width: 90%;
+  width: 80%;
   color: #007bff;
   padding-inline: 5px;
 }
@@ -139,4 +148,54 @@
 /* Span */
 .file-preview-item span {
   margin-left: 15px;
+}
+
+.fileModalBackground {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.fileModalBody {
+  width: 100%;
+  min-height: 80vh;
+}
+
+.fileModal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  width: 100%;
+}
+
+.fileModalDropArea {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fileModalDropArea p {
+  font-size: 16px;
+  color: #999;
+}
+
+.fileModalDropArea.active {
+  border: 2px dashed #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+  color: #007bff;
 }

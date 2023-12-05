@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { School } from "../components/SchoolList";
 import UserList from "../components/UserList";
-import "../css/SchoolUserModal.css";
+//import "../css/SchoolUserModal.css";
+import "../css/Modal.css";
 
 interface SchoolUserModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ const SchoolUserModal: React.FC<SchoolUserModalProps> = ({
   };
 
   // Add an event listener to handle clicks outside the modal
-  useEffect(() => {
+  /*useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (
         isOpen &&
@@ -41,26 +42,38 @@ const SchoolUserModal: React.FC<SchoolUserModalProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isOpen]);
+  }, [isOpen]);*/
+
+  // Add an event listener to handle clicks outside the modal
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        handleCloseModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   return (
-    <div className={`modal-container ${isOpen ? "open" : ""}`}>
-      <div
-        className={`school-user-modal ${isOpen ? "open" : ""}`}
-        ref={modalRef}
-      >
-        <div className="content">
-          <div className="modal-header">
-            <h2 className="modal-title">Users</h2>
-            <button className="close-button" onClick={handleCloseModal}>
-              X
-            </button>
-          </div>
-          {/* Render the UserList component with the necessary props */}
+    <div className="modalBackground">
+      <div className="modal" ref={modalRef}>
+        <div className="modalHeader">
+          <h2 className="modalTitle">Članovi</h2>
+          <button className="closeButton" onClick={handleCloseModal}>
+            x
+          </button>
+        </div>
+        <div className="modalBody">
           <UserList
             userId={null}
             userToken={userToken}
             ustanovaId={ustanovaId}
+            filterByRole={false}
           />
         </div>
       </div>

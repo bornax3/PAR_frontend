@@ -1,4 +1,4 @@
-.content {
+.content-user-list {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -18,10 +18,13 @@
 }
 
 /* Style for the search input */
-.search-input {
-  width: 100%;
-  margin: 10px 0; /* Add some margin to separate the search input from the user list */
-  padding: 5px; /* Add padding to the search input for better appearance */
+.search-input-user-list {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
 /* Style for individual user items */
@@ -58,4 +61,62 @@
 .delete:hover::before {
   opacity: 1;
   visibility: visible;
+}
+
+/* Style for filter buttons */
+
+/*.filter-button {
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+  background-color: #ddd;
+}
+
+.filter-button.active {
+  background-color: #3f72af;
+  color: #ffffff;
+}*/
+
+.filter-section {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: #eee;
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 300px;
+  font-size: 14px;
+}
+
+.filter-section .filter-button {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.filter-section .filter-button {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 0;
+  color: rgba(51, 65, 85, 1);
+  transition: all 0.15s ease-in-out;
+}
+
+.filter-button.active {
+  background-color: #fff;
+  font-weight: 600;
 }
